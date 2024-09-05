@@ -93,7 +93,7 @@
 
         /* Modal Styling */
         .modal {
-            display: none;
+            display: none; /* Initially hidden */
             position: fixed;
             z-index: 1;
             left: 0;
@@ -152,7 +152,7 @@
 </div>
 
 <!-- Modal for correct login -->
-<div id="myModal" class="modal" style="display: flex;">
+<div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <button id="topic3Btn">Topic 3</button>
@@ -162,7 +162,7 @@
 </div>
 
 <!-- Modal for 3 wrong attempts -->
-<div id="warnModal" class="modal" style="display: flex;">
+<div id="warnModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <p>Are you sure you have access? Cause you would be in by now if I let you!</p>
@@ -205,13 +205,13 @@
             const password = $('#password').val();
 
             if (credentials[username] === password) {
-                $('#myModal').fadeIn();
+                $('#myModal').fadeIn();  // Show modal on successful login
             } else {
                 attemptCount++;
                 $('#error').fadeIn().delay(2000).fadeOut();
 
                 if (attemptCount >= 3) {
-                    $('#warnModal').fadeIn();
+                    $('#warnModal').fadeIn();  // Show warning modal after 3 failed attempts
                 }
             }
         }
