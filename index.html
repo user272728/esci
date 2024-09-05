@@ -101,17 +101,19 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
         }
 
         .modal-content {
             position: relative;
             background-color: #fefefe;
-            margin: auto;
             padding: 20px;
             border: 1px solid #888;
             width: 300px;
             border-radius: 10px;
             text-align: center;
+            margin: auto;
         }
 
         .modal-content button {
@@ -149,13 +151,21 @@
     <p id="error">Invalid credentials, please try again.</p>
 </div>
 
-<!-- Modal -->
-<div id="myModal" class="modal">
+<!-- Modal for correct login -->
+<div id="myModal" class="modal" style="display: flex;">
     <div class="modal-content">
         <span class="close">&times;</span>
         <button id="topic3Btn">Topic 3</button>
         <button id="topic4Btn">Topic 4</button>
         <button id="naBtn">N/A</button>
+    </div>
+</div>
+
+<!-- Modal for 3 wrong attempts -->
+<div id="warnModal" class="modal" style="display: flex;">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Are you sure you have access? Cause you would be in by now if I let you!</p>
     </div>
 </div>
 
@@ -167,6 +177,8 @@
         "guest": "1234",
         "ethan": "cdeb1"
     };
+
+    let attemptCount = 0;
 
     $(document).ready(function () {
         // Sparkle effect
@@ -188,14 +200,31 @@
         });
 
         // Handle login
-        $('#loginButton').click(function () {
+        function handleLogin() {
             const username = $('#username').val();
             const password = $('#password').val();
 
             if (credentials[username] === password) {
                 $('#myModal').fadeIn();
             } else {
+                attemptCount++;
                 $('#error').fadeIn().delay(2000).fadeOut();
+
+                if (attemptCount >= 3) {
+                    $('#warnModal').fadeIn();
+                }
+            }
+        }
+
+        // Login button click
+        $('#loginButton').click(function () {
+            handleLogin();
+        });
+
+        // Enter key event
+        $(document).keypress(function (e) {
+            if (e.which == 13) { // Enter key is pressed
+                handleLogin();
             }
         });
 
@@ -214,13 +243,13 @@
 
         // Close modal
         $('.close').click(function () {
-            $('#myModal').fadeOut();
+            $('.modal').fadeOut();
         });
 
         // Close modal if clicking outside of modal content
         $(window).click(function (e) {
-            if ($(e.target).is('#myModal')) {
-                $('#myModal').fadeOut();
+            if ($(e.target).is('.modal')) {
+                $('.modal').fadeOut();
             }
         });
     });
